@@ -12,7 +12,12 @@ from sql import *
 from re import search
 from datetime import datetime
 
+from Flask import Flask, request
+
 TELEGRAM_TOKEN = "6405760533:AAETDpDK03yCjjcC7Z7Kw9zoeqRrJeBro2g"
+
+# создаём приложение Flask
+application = Flask(__name__)
 
 # Создаем экземпляр бота
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
@@ -1229,6 +1234,10 @@ def callback_inline(call):
         bot.send_message(report_user_chat_id, "Администратор вошёл в чат!", reply_markup=markup)
 
         bot.send_message(call.message.chat.id, "Вы вошли в чат по заявке " + str(report_id) + "!", reply_markup=markup)
+
+@application.route('/', methods=['POST'])
+def request_worker():
+    return 'test'
 
 while True:
     try:
