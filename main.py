@@ -1,3 +1,4 @@
+import threading
 import json
 import telebot
 import time
@@ -1240,11 +1241,33 @@ def callback_inline(call):
 def request_worker():
     return 'test'
 
-while True:
-    try:
-        bot.polling(non_stop=True, interval=0)
-        application.run(host="0.0.0.0", port=33)
-    except Exception as e:
-        print(e)
-        time.sleep(5)
-        continue
+def app_run():
+    while True:
+        try:
+            application.run(host="0.0.0.0", port=33)
+        except Exception as ex:
+            print(ex)
+
+def bot_polling():
+    while True:
+        try:
+            bot.polling(non_stop=True, interval=0)
+        except Exception as e:
+            print(e)
+            time.sleep(5)
+            continue
+
+bot_thread = threading.Thread(target=bot_polling)
+bot_thread.daemon = True
+bot_thread.start()
+
+app_thread = threading.Thread(target=app_run)
+app_thread.daemon = True
+app_thread.start()
+
+if __name__ == "__main__":
+    while True:
+        try:
+            time.sleep(1)
+        except KeyboardInterrupt:
+            break
