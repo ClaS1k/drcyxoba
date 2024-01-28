@@ -1238,13 +1238,13 @@ def callback_inline(call):
         bot.send_message(call.message.chat.id, "Вы вошли в чат по заявке " + str(report_id) + "!", reply_markup=markup)
 
 @application.route('/', methods=['POST'])
-def request_worker():
-    return 'test'
+def request_worker(data):
+    print(data)
 
 def app_run():
     while True:
         try:
-            application.run(host="0.0.0.0", port=33)
+            application.run(host="0.0.0.0", port=33, ssl_context='adhoc')
         except Exception as ex:
             print(ex)
 
