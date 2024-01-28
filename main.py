@@ -12,12 +12,13 @@ from sql import *
 from re import search
 from datetime import datetime
 
-from Flask import Flask, request
+from flask import Flask, request
 
 TELEGRAM_TOKEN = "6405760533:AAETDpDK03yCjjcC7Z7Kw9zoeqRrJeBro2g"
 
 # создаём приложение Flask
 application = Flask(__name__)
+flask_started = False
 
 # Создаем экземпляр бота
 bot = telebot.TeleBot(TELEGRAM_TOKEN)
@@ -1242,6 +1243,7 @@ def request_worker():
 while True:
     try:
         bot.polling(non_stop=True, interval=0)
+        application.run(host="0.0.0.0", port=33)
     except Exception as e:
         print(e)
         time.sleep(5)
