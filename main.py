@@ -1238,8 +1238,20 @@ def callback_inline(call):
         bot.send_message(call.message.chat.id, "Вы вошли в чат по заявке " + str(report_id) + "!", reply_markup=markup)
 
 @application.route('/', methods=['POST'])
-def request_worker(data):
-    print(data)
+def request_worker():
+    data = json.loads(request.data)
+
+    admin_message = "Поступила новая заявка с сайта. \n"
+    admin_message += "Имя: " + data.Name + " \n"
+    admin_message += "Телефон: " + data.Phone + " \n"
+    admin_message += "Услуга: " + data.Textarea + " \n"
+    
+    sql = "SELECT * FROM `users` WHERE `role`='admin'"
+    result = sql_query(sql)
+
+    for row in result:
+        chat_id = row[0]
+        bot.send_message(chat_id, admin_message)
 
 def app_run():
     while True:
